@@ -1,0 +1,11 @@
+# modules
+node_modules
+
+# build project folder
+dist
+
+# enviroment
+.env
+
+# packages
+package-lock.json

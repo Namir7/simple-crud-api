@@ -1,0 +1,31 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "simple crud api",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Namir7/simple-crud-api.git"
+  },
+  "keywords": [
+    "node",
+    "crud",
+    "api"
+  ],
+  "author": "Namir7",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Namir7/simple-crud-api/issues"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "eslint": "^8.3.0"
+  }
+}
