@@ -1,1 +1,22 @@
-{}
+{
+   "person": {
+      "items": [
+         {
+            "id": "1",
+            "name": "Robert",
+            "age": 55,
+            "hobbies": [
+               "swimming"
+            ]
+         },
+         {
+            "id": "38b30030-72dc-4b15-961c-8fe73a948d70",
+            "name": "Robert",
+            "age": 55,
+            "hobbies": [
+               "swimming"
+            ]
+         }
+      ]
+   }
+}

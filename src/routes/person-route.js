@@ -1,19 +1,34 @@
-const PersonModel = require('../models/Person');
+const personController = require('../controllers/person-controller');
 
 class PersonRoute {
-   constructor(model) {
-      this.model = model;
+   constructor(pathes) {
+      this._pathes = pathes;
    }
 
-   getOne() {}
-
-   getAll() {}
-
-   create() {}
-
-   edit() {}
-
-   delete() {}
+   resolver(req, res) {}
 }
 
-module.exports = new PersonRoute(PersonModel);
+const personRoute = new PersonRoute([
+   {
+      path: '/',
+      method: 'GET',
+   },
+   {
+      path: new RegExp('//d+'),
+      method: 'GET',
+   },
+   {
+      path: '/',
+      method: 'POST',
+   },
+   {
+      path: '/',
+      method: 'PUT',
+   },
+   {
+      path: '/',
+      method: 'DELETE',
+   },
+]);
+
+module.exports = personRoute;

@@ -1,6 +1,6 @@
-const uuid = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 
-class Person {
+class PersonFactory {
    constructor(payload) {
       if (!payload.name && payload.age && payload.hobbies)
          throw new Error(
@@ -9,7 +9,7 @@ class Person {
             )}`
          );
 
-      this.id = uuid();
+      this.id = uuidv4();
 
       this.name = payload.name;
       this.age = payload.age;
@@ -17,4 +17,4 @@ class Person {
    }
 }
 
-module.exports = Person;
+module.exports = PersonFactory;
