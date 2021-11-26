@@ -10,15 +10,15 @@ class DataBase {
       this.data = null;
    }
 
-   async configure() {
-      this.data = await this._dataAdapter.read();
+   configure() {
+      this.data = this._dataAdapter.readSync();
    }
 
    item_find(modelName, id) {
       this._utils.checkModelExists(modelName, this.data);
 
-      const foundItem = this._utils.findIndexById(modelName, id);
-      return foundItem ? foundItem : null;
+      const foundItem = this._utils.findItem(modelName, id, this.data);
+      return foundItem;
    }
 
    item_findAll(modelName) {
@@ -29,7 +29,7 @@ class DataBase {
 
    async item_insert(modelName, modelItem) {
       this._utils.checkModelExists(modelName, this.data);
-      this._utils.checkIfNotExists(modelName, modelItem.id);
+      this._utils.checkIfNotExists(modelName, modelItem.id, this.data);
 
       const modelItems = this.data[modelName].items;
 
@@ -39,22 +39,23 @@ class DataBase {
 
    async item_edit(modelName, id, newData) {
       this._utils.checkModelExists(modelName, this.data);
-      this._utils.checkIfNotExists(modelName, id);
+      this._utils.checkIfExists(modelName, id, this.data);
 
-      this.data[modelName].items[this._utils.findIndexById(modelName, id)] = {
-         ...newData,
-         id,
-      };
+      const oldData = this._utils.findItem(modelName, id, this.data);
+
+      this.data[modelName].items[
+         this._utils.findIndexById(modelName, id, this.data)
+      ] = Object.assign(oldData, newData);
 
       await this._dataAdapter.write(this.data);
    }
 
    async item_delete(modelName, id) {
       this._utils.checkModelExists(modelName, this.data);
-      this._utils.checkIfExists(modelName, id);
+      this._utils.checkIfExists(modelName, id, this.data);
 
       this.data[modelName].items.splice(
-         this._utils.findIndexById(modelName, id),
+         this._utils.findIndexById(modelName, id, this.data),
          1
       );
 
@@ -64,5 +65,6 @@ class DataBase {
 
 const dataPath = path.resolve(__dirname, '..', 'data.json');
 const database = new DataBase(dataPath);
+database.configure();
 
 module.exports = database;

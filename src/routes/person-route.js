@@ -18,12 +18,12 @@ const personRoute = new Route('person', [
       controller: controller.create,
    },
    {
-      url: '/',
+      url: /\/[\w-]/,
       method: 'PUT',
       controller: controller.edit,
    },
    {
-      url: '/',
+      url: /\/[\w-]/,
       method: 'DELETE',
       controller: controller.delete,
    },

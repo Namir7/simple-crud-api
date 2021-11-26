@@ -1,4 +1,9 @@
 class Utils_DataBase {
+   findItem(modelName, id, data) {
+      const itemIndex = this.findIndexById(modelName, id, data);
+      return itemIndex !== -1 ? data[modelName].items[itemIndex] : null;
+   }
+
    findIndexById(modelName, id, data) {
       return data[modelName].items.findIndex((item) => item.id === id);
    }

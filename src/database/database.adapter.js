@@ -1,4 +1,5 @@
-const fs = require('fs/promises');
+const fs = require('fs');
+const fsPromise = require('fs/promises');
 
 class DataAdapter {
    constructor(path) {
@@ -6,7 +7,7 @@ class DataAdapter {
    }
 
    async read() {
-      const data = await fs
+      const data = await fsPromise
          .readFile(this.path)
          .then((dataStr) => JSON.parse(dataStr));
 
@@ -14,7 +15,12 @@ class DataAdapter {
    }
 
    async write(data) {
-      await fs.writeFile(this.path, JSON.stringify(data));
+      await fsPromise.writeFile(this.path, JSON.stringify(data));
+   }
+
+   readSync() {
+      const data = JSON.parse(fs.readFileSync(this.path));
+      return data;
    }
 }
 

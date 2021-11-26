@@ -1,39 +1,75 @@
 const personModel = require('../database/models/person-model');
 const Person = require('../factories/person-factory');
 
-class PersonController {
-   async getOne(req, res) {
-      res.end('person getOne method');
+const {
+   _utils_checkNewPerson,
+   _utils_checkEditPersonData,
+   _utils_getId,
+} = require('./person-controller.utils');
 
-      // const id = req.
-      // const person = personModel.getOne(id);
+class PersonController {
+   getOne(req, res) {
+      const id = _utils_getId(req.url);
+      const person = personModel.getOne(id);
+
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(person));
    }
 
-   async getAll(req, res) {
+   getAll(req, res) {
       const persons = personModel.getAll();
 
-      console.log(persons);
-      return res.end('getAll');
-      // res.end(JSON.stringify(persons));
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(persons));
    }
 
    async create(req, res) {
-      res.end('person create method');
+      req.on('data', (data) => {
+         const body = JSON.parse(data.toString('utf-8'));
 
-      // const person = new Person(data);
-      // personModel.create(person);
+         const isPeronValid = _utils_checkNewPerson(body);
+
+         if (!isPeronValid) {
+            return res.end('incorrect person data');
+         } else {
+            const person = new Person({ ...body });
+            personModel.create(person);
+
+            return res.end('person created');
+         }
+      });
    }
 
    async edit(req, res) {
-      res.end('person edit method');
+      const id = _utils_getId(req.url);
+      const person = personModel.getOne(id);
 
-      // personModel.edit(id, newData);
+      if (!person) return res.end(`not user with ${id} id`);
+
+      req.on('data', (data) => {
+         const body = JSON.parse(data.toString('utf-8'));
+
+         const isDataValid = _utils_checkEditPersonData(body);
+
+         if (!isDataValid) {
+            return res.end('incorrect data');
+         } else {
+            personModel.edit(id, body);
+
+            return res.end('person edited');
+         }
+      });
    }
 
    async delete(req, res) {
-      res.end('person delete method');
+      const id = _utils_getId(req.url);
 
-      // personModel.delete(id);
+      const person = personModel.getOne(id);
+
+      if (!person) return res.end(`not user with ${id} id`);
+
+      personModel.delete(id);
+      res.end('person deleted');
    }
 }
 

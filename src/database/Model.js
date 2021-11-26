@@ -8,11 +8,11 @@ class Model {
    }
 
    getOne(id) {
-      this.database.item_find(this._modelName, id);
+      return this.database.item_find(this._modelName, id);
    }
 
    getAll() {
-      this.database.item_findAll(this._modelName);
+      return this.database.item_findAll(this._modelName);
    }
 
    async create(data) {
