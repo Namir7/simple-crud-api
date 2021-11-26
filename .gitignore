@@ -9,3 +9,6 @@ dist
 
 # packages
 package-lock.json
+
+# data
+data.json
