@@ -3,27 +3,38 @@ const Person = require('../factories/person-factory');
 
 class PersonController {
    async getOne(req, res) {
-      const id = req.
-      
-      const person = personModel.getOne(id);
+      res.end('person getOne method');
+
+      // const id = req.
+      // const person = personModel.getOne(id);
    }
 
-   // async getAll(req, res) {
-   //    const persons = personModel.getAll();
-   // }
-   // async create(req, res) {
-   //    const person = new Person(data);
+   async getAll(req, res) {
+      const persons = personModel.getAll();
 
-   //    personModel.create(person);
-   // }
+      console.log(persons);
+      return res.end('getAll');
+      // res.end(JSON.stringify(persons));
+   }
 
-   // async edit(req, res) {
-   //    personModel.edit(id, newData);
-   // }
+   async create(req, res) {
+      res.end('person create method');
 
-   // async delete(req, res) {
-   //    personModel.delete(id);
-   // }
+      // const person = new Person(data);
+      // personModel.create(person);
+   }
+
+   async edit(req, res) {
+      res.end('person edit method');
+
+      // personModel.edit(id, newData);
+   }
+
+   async delete(req, res) {
+      res.end('person delete method');
+
+      // personModel.delete(id);
+   }
 }
 
 module.exports = new PersonController();

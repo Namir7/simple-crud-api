@@ -1,20 +1,33 @@
 const personRoute = require('./routes/person-route');
-const undefinedRoute = require('./routes/undefined-route');
 
 class Router {
    constructor(routes, options) {
-      this.baseUrl = options.baseUrl ? options.baseUrl : '/api';
+      this.baseUrl = options?.baseUrl || '/api';
+      this._routes = routes;
    }
 
-   config(req, res) {
-      switch (req.url) {
-         case `${this.baseUrl}/person`:
-            return personRoute;
+   resolver(req, res) {
+      const route = this._utils_findRoute(req.url);
 
-         default:
-            return undefinedRoute;
+      if (!route) return res.end('undefined path');
+      req.url = req.url.replace(
+         new RegExp(`${this.baseUrl}/${route.name}/{0,1}`),
+         '/'
+      );
+
+      return route.resolver(req, res);
+   }
+
+   _utils_findRoute(url) {
+      for (let i = 0; i < this._routes.length; i++) {
+         const route = this._routes[i];
+         const rule = new RegExp(`${this.baseUrl}/${route.name}/{0,1}\\w{0,}`);
+
+         if (rule.test(url)) return route;
       }
+
+      return null;
    }
 }
 
-module.exports = new Router([person]).config;
+module.exports = new Router([personRoute]);

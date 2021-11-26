@@ -1,33 +1,31 @@
-const personController = require('../controllers/person-controller');
+const Route = require('../Route');
+const controller = require('../controllers/person-controller');
 
-class PersonRoute {
-   constructor(pathes) {
-      this._pathes = pathes;
-   }
-
-   resolver(req, res) {}
-}
-
-const personRoute = new PersonRoute([
+const personRoute = new Route('person', [
    {
-      path: '/',
+      url: '/',
       method: 'GET',
+      controller: controller.getAll,
    },
    {
-      path: new RegExp('//d+'),
+      url: /\/[\w-]/,
       method: 'GET',
+      controller: controller.getOne,
    },
    {
-      path: '/',
+      url: '/',
       method: 'POST',
+      controller: controller.create,
    },
    {
-      path: '/',
+      url: '/',
       method: 'PUT',
+      controller: controller.edit,
    },
    {
-      path: '/',
+      url: '/',
       method: 'DELETE',
+      controller: controller.delete,
    },
 ]);
 

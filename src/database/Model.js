@@ -1,8 +1,10 @@
+const database = require('./database');
+
 class Model {
-   constructor(database) {
+   constructor(name) {
       this.database = database;
 
-      this._modelName = null;
+      this._modelName = name;
    }
 
    getOne(id) {
@@ -10,7 +12,7 @@ class Model {
    }
 
    getAll() {
-      this.database.item_findOne(this._modelName);
+      this.database.item_findAll(this._modelName);
    }
 
    async create(data) {
