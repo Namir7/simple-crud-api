@@ -12,4 +12,4 @@ HOW TO USE:
 
 also you can run app in development mode (by using nodemon package) - "npm run dev"
 
-you can reset your data file by script "npm run reset-db" to create data file or reset if
+you can reset your data file by script "npm run reset-db" to create data file or reset it
