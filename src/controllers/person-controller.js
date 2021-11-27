@@ -5,58 +5,88 @@ const {
    _utils_checkNewPerson,
    _utils_checkEditPersonData,
    _utils_getId,
+   _utils_validateId,
 } = require('./person-controller.utils');
 
 class PersonController {
    getOne(req, res) {
       const id = _utils_getId(req.url);
+
+      if (!_utils_validateId(id)) {
+         res.writeHead(400, 'failed');
+         return res.end(`inappropriate "${id}" id value`);
+      }
+
       const person = personModel.getOne(id);
 
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(person));
+      if (!person) {
+         res.writeHead(404, 'failed');
+         return res.end(`person with "${id}" id doesn't exist`);
+      } else {
+         res.writeHead(200, 'success', { 'Content-Type': 'application/json' });
+         return res.end(JSON.stringify(person));
+      }
    }
 
    getAll(req, res) {
       const persons = personModel.getAll();
 
-      res.setHeader('Content-Type', 'application/json');
+      res.writeHead(200, 'success', { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(persons));
    }
 
    async create(req, res) {
-      req.on('data', (data) => {
+      req.on('data', async (data) => {
          const body = JSON.parse(data.toString('utf-8'));
 
          const isPeronValid = _utils_checkNewPerson(body);
 
          if (!isPeronValid) {
-            return res.end('incorrect person data');
+            res.writeHead(400, 'failed');
+            return res.end(`incorrect "${data}" person value`);
          } else {
-            const person = new Person({ ...body });
-            personModel.create(person);
+            const person = await personModel.create(new Person({ ...body }));
 
-            return res.end('person created');
+            res.writeHead(200, 'success', {
+               'Content-Type': 'application/json',
+            });
+            return res.end(JSON.stringify(person));
          }
       });
    }
 
    async edit(req, res) {
       const id = _utils_getId(req.url);
+
+      if (!_utils_validateId(id)) {
+         res.writeHead(400, 'failed');
+         return res.end(`inappropriate "${id}" id value`);
+      }
+
       const person = personModel.getOne(id);
 
-      if (!person) return res.end(`not user with ${id} id`);
+      if (!person) {
+         res.writeHead(404, 'failed');
+         return res.end(`person with "${id}" id doesn't exist`);
+      }
 
-      req.on('data', (data) => {
+      req.on('data', async (data) => {
          const body = JSON.parse(data.toString('utf-8'));
 
          const isDataValid = _utils_checkEditPersonData(body);
 
          if (!isDataValid) {
-            return res.end('incorrect data');
+            res.writeHead(400, 'failed');
+            return res.end(
+               `inappropriate person value: ${JSON.stringify(body)}`
+            );
          } else {
-            personModel.edit(id, body);
+            const person = await personModel.edit(id, body);
 
-            return res.end('person edited');
+            res.writeHead(200, 'success', {
+               'Content-Type': 'application/json',
+            });
+            return res.end(JSON.stringify(person));
          }
       });
    }
@@ -64,12 +94,23 @@ class PersonController {
    async delete(req, res) {
       const id = _utils_getId(req.url);
 
+      if (!_utils_validateId(id)) {
+         res.writeHead(400, 'failed');
+         return res.end(`inappropriate "${id}" id value`);
+      }
+
       const person = personModel.getOne(id);
 
-      if (!person) return res.end(`not user with ${id} id`);
+      if (!person) {
+         res.writeHead(404, 'failed');
+         return res.end(`person with "${id}" id doesn't exist`);
+      }
 
-      personModel.delete(id);
-      res.end('person deleted');
+      await personModel.delete(id);
+      res.writeHead(204, 'success', {
+         'Content-Type': 'application/json',
+      });
+      return res.end();
    }
 }
 

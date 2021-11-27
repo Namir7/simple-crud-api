@@ -47,8 +47,15 @@ const _utils_getId = (url) => {
    return url.replace('/', '');
 };
 
+const _utils_validateId = (id) => {
+   const rule = /^[\w-]{36}$/;
+
+   return rule.test(id);
+};
+
 module.exports = {
    _utils_checkNewPerson,
    _utils_checkEditPersonData,
    _utils_getId,
+   _utils_validateId,
 };

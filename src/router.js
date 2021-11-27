@@ -9,7 +9,10 @@ class Router {
    resolver(req, res) {
       const route = this._utils_findRoute(req.url);
 
-      if (!route) return res.end('undefined path');
+      if (!route) {
+         res.writeHead(404, 'failed');
+         return res.end('invalid url');
+      }
       req.url = req.url.replace(
          new RegExp(`${this.baseUrl}/${route.name}/{0,1}`),
          '/'

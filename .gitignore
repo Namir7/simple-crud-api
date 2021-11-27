@@ -11,4 +11,5 @@ dist
 package-lock.json
 
 # data
-data.json
+src/data.json
+src/data.backup.json

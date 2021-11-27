@@ -1,4 +1,4 @@
-const database = require('./database');
+const database = require('./database.instance');
 
 class Model {
    constructor(name) {
@@ -16,15 +16,22 @@ class Model {
    }
 
    async create(data) {
-      await this.database.item_insert(this._modelName, data);
+      const person = await this.database.item_insert(this._modelName, data);
+      return person;
    }
 
    async edit(id, newData) {
-      await this.database.item_edit(this._modelName, id, newData);
+      const person = await this.database.item_edit(
+         this._modelName,
+         id,
+         newData
+      );
+      return person;
    }
 
    async delete(id) {
       await this.database.item_delete(this._modelName, id);
+      return true;
    }
 }
 
