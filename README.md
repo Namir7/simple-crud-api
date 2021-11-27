@@ -6,7 +6,7 @@ recommendations:
  - node v16.13.0 or higher
 
 HOW TO USE: 
-
+ - switch to dev "branch";
  - install all dependencies by "npm install";
  - run app by "npm run prod";
 
