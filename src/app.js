@@ -10,6 +10,7 @@ const server = http.createServer((req, res) => {
    try {
       router.resolver(req, res);
    } catch (e) {
+      console.log(e);
       internalServerErrorHandler(req, res);
    }
 });

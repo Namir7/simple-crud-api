@@ -64,6 +64,8 @@ class Database {
             fs.writeFileSync(dataPath, JSON.stringify(databaseStructure), {
                encoding: 'utf8',
             });
+
+            this.data = this._dataAdapter.readSync();
          } else {
             throw e;
          }
