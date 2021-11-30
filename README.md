@@ -13,3 +13,8 @@ HOW TO USE:
 also you can run app in development mode (by using nodemon package) - "npm run dev"
 
 you can reset your data file by script "npm run reset-db" to create data file or reset it
+
+!!! also you need to put /api prefix before current route, for example: /api/person/82jd92-du3ndd-2iddjd
+
+example request:
+   - "curl localhost:3000/api/person"
